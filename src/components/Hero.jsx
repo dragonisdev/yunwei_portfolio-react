@@ -147,7 +147,7 @@ const Hero = () => {
               <div className='mt-24 px-5 sm:px-10'>
                 <h1 className='special-font hero-heading text-blue-100'>Y<b>u</b>nwei C<b>u</b>i</h1>
 
-                <p className='md:ml-1 ml-0 mb-5 max-w-64 font-robert-regular text-blue-100'>Enter the Metagame Layer <br/> Unleash the Play Economy</p>
+                <p className='md:ml-1 ml-0 mb-5 max-w-128 font-robert-regular text-blue-100'>A creative savant always on the lookout to build new things & <br/>  A branding expert to make your products stand out commercially</p>
                 <Button id="watch-trailer" title="Watch Trailer" leftIcon={<TiLocationArrow/>} containerClass="!bg-yellow-300 flex-center gap-1"/>
               </div>
             </div>

@@ -3,6 +3,7 @@ import React from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/all';
 import AnimatedTitle from './AnimatedTitle';
+import TypingText from './TypingText';
 
 const About = () => {
     useGSAP(() => {
@@ -28,7 +29,7 @@ const About = () => {
   return (
     <section id="about" className='min-h-screen w-screen'>
         <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
-            <h2 className='font-general text-sm uppercase md:text-[10px]'>Welcome to my world</h2>
+            <TypingText text="I am a..." className='font-general text-sm uppercase md:text-[10px]'></TypingText>
 
             <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist, <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
            
