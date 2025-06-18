@@ -21,7 +21,7 @@ const Hero = () => {
   const upComingVideoIndex = (currentIndex % totalVideos + 1)
 
   const handleMiniVdClick = () => {
-    
+
     setHasClicked(true)
 
     setCurrentIndex(upComingVideoIndex)
@@ -43,10 +43,10 @@ const Hero = () => {
 
       gsap.to('#next-video', {
         transformOrigin: 'center center',
-        scale: 1, 
+        scale: 1,
         width:  '100%',
         height: '100%',
-        duration: 1, 
+        duration: 1,
         ease: 'power1.inOut',
         onStart: () => nextVideoRef.current.play(),
       })
@@ -55,11 +55,11 @@ const Hero = () => {
         scale: 0,
         duration: 1,
         ease: 'power1.inOut',
-        
+
       })
     }
   }, {
-    dependencies: [currentIndex], 
+    dependencies: [currentIndex],
     revertOnUpdate: true
   });
 
@@ -132,7 +132,7 @@ const Hero = () => {
 
             <video
               src={getVideoSrc(currentIndex)}
-              //autoPlay
+              autoPlay
               preload="auto"
               loop
               muted
@@ -140,22 +140,22 @@ const Hero = () => {
             />
 
             <h1 className='special-font hero-heading absolute z-40 bottom-5 right-5 text-blue-75'>
-              Y<b>u</b>nwei
+              P<b>o</b>rtfolio
             </h1>
 
             <div className='absolute left-0 top-0 z-40 size-full'>
               <div className='mt-24 px-5 sm:px-10'>
-                <h1 className='special-font hero-heading text-blue-100'>redefi<b>n</b>e</h1>
+                <h1 className='special-font hero-heading text-blue-100'>Y<b>u</b>nwei C<b>u</b>i</h1>
 
                 <p className='md:ml-1 ml-0 mb-5 max-w-64 font-robert-regular text-blue-100'>Enter the Metagame Layer <br/> Unleash the Play Economy</p>
                 <Button id="watch-trailer" title="Watch Trailer" leftIcon={<TiLocationArrow/>} containerClass="!bg-yellow-300 flex-center gap-1"/>
               </div>
             </div>
 
-          </div> 
+          </div>
         </div>
         <h1 className='special-font hero-heading absolute  bottom-5 right-5 text-black'>
-              Y<b>u</b>nwei
+              P<b>o</b>rtfolio
           </h1>
     </div>
   )

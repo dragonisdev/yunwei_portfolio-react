@@ -19,18 +19,18 @@ const About = () => {
     
     clipAnimation.to('.mask-clip-path', {
         width: '100vw',
-        height: '100vh',
+        height: '100.1vh',
         borderRadius: 0
     })
 })
 
 
   return (
-    <div id="about" className='min-h-screen w-screen'>
+    <section id="about" className='min-h-screen w-screen'>
         <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
             <h2 className='font-general text-sm uppercase md:text-[10px]'>Welcome to my world</h2>
 
-            <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist & <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
+            <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist, <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
            
 
             <div className='about-subtext'>
@@ -49,7 +49,7 @@ const About = () => {
                 />
             </div>
         </div>
-    </div>
+    </section>
   )
 }
 

@@ -2,6 +2,9 @@ import React from 'react'
 import { useRef, useState, useEffect} from 'react'
 import { TiLocationArrow } from 'react-icons/ti'
 import Button from './Button'
+import { useWindowScroll } from 'react-use'
+import gsap from 'gsap'
+
 
 const navItems = ['Nexus', 'Vault', 'Prologue', 'About', 'Contact']
 
@@ -9,22 +12,91 @@ const Navbar = () => {
 
     const [isAudioPlaying, setIsAudioPlaying] = useState(false)
     const [isIndicatorActive, setIsIndicatorActive] = useState(false)
-
+    const [lastScrollY, setLastScrollY] = useState(0)
+    const [isNavVisible, setisNavVisible] = useState(true)
+    const [showAudioHint, setShowAudioHint] = useState(true)
+    
+    const audioButtonRef = useRef(null)
     const navContainerRef = useRef(null)
-
     const audioElementRef = useRef(null)
-    const toggleAudioIndicator = () => {
-        setIsAudioPlaying((prev) => !prev)
-        setIsIndicatorActive((prev) => !prev)
-    }
+
+    const { y: currentScrollY } = useWindowScroll()
+
+    useEffect(() => {
+        if (currentScrollY === 0) {
+            setisNavVisible(true)
+            navContainerRef.current.classList.remove('floating-nav')
+        } else if (currentScrollY > lastScrollY) {
+            setisNavVisible(false)
+            navContainerRef.current.classList.add('floating-nav')
+        } else if (currentScrollY < lastScrollY) {
+            setisNavVisible(true)
+            navContainerRef.current.classList.add('floating-nav')
+        }
+
+        setLastScrollY(currentScrollY)
+        
+    }, [currentScrollY, lastScrollY])
+
+    useEffect(() => {
+        gsap.to(navContainerRef.current, {
+            y: isNavVisible ? 0 : -100, 
+            opacity: isNavVisible ? 1 : 0,
+            duration: 0.3,
+            ease: "power2.out"
+        })
+
+        
+    }, [isNavVisible])
 
     useEffect(() => {
         if (isAudioPlaying) {
+
             audioElementRef.current.play()
+
         } else {
+            
             audioElementRef.current.pause()
+
         }
     }, [isAudioPlaying])
+
+    useEffect(() => {
+        const audio = audioElementRef.current
+
+        if (!audio) return
+
+        let fadeInterval
+
+        if (isAudioPlaying) {
+            audio.volume = 0
+            audio.play()
+
+            fadeInterval = setInterval(() => {
+                if (audio.volume < 1) {
+                    audio.volume = Math.min(audio.volume + 0.05, 1)
+                } else {
+                    clearInterval(fadeInterval)
+                }
+            }, 20) 
+        } else {
+            clearInterval(fadeInterval)
+            audio.pause()
+        }
+
+        return () => clearInterval(fadeInterval)
+    }, [isAudioPlaying])
+
+
+    const toggleAudioIndicator = () => {
+        setIsAudioPlaying((prev) => !prev)
+        setIsIndicatorActive((prev) => !prev)
+        setShowAudioHint(false) // hide popup
+    }
+
+    
+
+    
 
   return (
     <div ref={navContainerRef} className='fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6'>
@@ -63,21 +135,33 @@ const Navbar = () => {
                         ))}
                     </div>
                     
-                    <button 
-                        className='ml-10 flex items-center space-x-0.5 ' 
-                        onClick={toggleAudioIndicator}>
-                            <audio 
-                                ref={audioElementRef} 
-                                className='hidden' 
-                                src="/audio/loop.mp3" 
-                                loop />
-                                    {[1, 2, 3, 4].map((bar) => (
-                                        <div key={bar} className={`indicator-line ${isIndicatorActive ? 'active' : ''}`} style={{animationDelay: `${bar * 0.1}s`}}/>
-
-                                        
-                                    ))}
-                            
-                    </button>
+                    <div className='relative'>
+                        {showAudioHint && (
+                            <div className="absolute top-10 left-5 bg-pink-400 text-white text-sm px-3 py-1 rounded-xl  animate-bounce z-50">
+                                Click me!
+                            </div>
+                        )}
+                        
+                        <button
+                            ref={audioButtonRef}
+                            className='ml-10 flex items-center space-x-0.5'
+                            onClick={toggleAudioIndicator}
+                        >
+                            <audio
+                                ref={audioElementRef}
+                                className='hidden'
+                                src="/audio/loop.mp3"
+                                loop
+                            />
+                            {[1, 2, 3, 4].map((bar) => (
+                                <div
+                                    key={bar}
+                                    className={`indicator-line ${isIndicatorActive ? 'active' : ''}`}
+                                    style={{ animationDelay: `${bar * 0.1}s` }}
+                                />
+                            ))}
+                        </button>
+                    </div>
 
                 </div>
             </nav>
