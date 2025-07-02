@@ -62,30 +62,40 @@ const Navbar = () => {
     }, [isAudioPlaying])
 
     useEffect(() => {
+    const handleFirstScroll = () => {
         const audio = audioElementRef.current
-
         if (!audio) return
 
-        let fadeInterval
-
-        if (isAudioPlaying) {
+        try {
             audio.volume = 0
-            audio.play()
+            audio.muted = false
+            audio.play().then(() => {
+                setIsAudioPlaying(true)
+                setIsIndicatorActive(true)
+                setShowAudioHint(false)
 
-            fadeInterval = setInterval(() => {
-                if (audio.volume < 1) {
-                    audio.volume = Math.min(audio.volume + 0.05, 1)
-                } else {
-                    clearInterval(fadeInterval)
-                }
-            }, 20) 
-        } else {
-            clearInterval(fadeInterval)
-            audio.pause()
+                // Optional: Fade in volume
+                const fadeInterval = setInterval(() => {
+                    if (audio.volume < 1) {
+                        audio.volume = Math.min(audio.volume + 0.05, 1)
+                    } else {
+                        clearInterval(fadeInterval)
+                    }
+                }, 50)
+            }).catch(err => {
+                console.warn("Autoplay blocked:", err)
+            })
+        } catch (err) {
+            console.warn("Audio play failed:", err)
         }
 
-        return () => clearInterval(fadeInterval)
-    }, [isAudioPlaying])
+        window.removeEventListener('scroll', handleFirstScroll)
+    }
+
+    window.addEventListener('scroll', handleFirstScroll, { once: true })
+
+    return () => window.removeEventListener('scroll', handleFirstScroll)
+}, [])
 
 
     const toggleAudioIndicator = () => {
@@ -99,7 +109,7 @@ const Navbar = () => {
     
 
   return (
-    <div ref={navContainerRef} className='fixed inset-x-0 top-4 z-50 h-16 border-none transition-all duration-700 sm:inset-x-6'>
+    <div ref={navContainerRef} className={`fixed inset-x-0 top-4 z-50 h-16  transition-all duration-500 sm:inset-x-6 rounded-xl ${isNavVisible && currentScrollY > 0 ? 'border border-solid border-white/20' : 'border-none'}`}>
         <header className='absolute top-1/2 w-full -translate-y-1/2'>
             <nav className='flex size-full items-center justify-between p-4'>
                 <div className='flex items-center gap-7'>
@@ -136,11 +146,11 @@ const Navbar = () => {
                     </div>
                     
                     <div className='relative'>
-                        {showAudioHint && (
+                        {/*{showAudioHint && (
                             <div className="absolute top-10 left-5 bg-pink-400 text-white text-sm px-3 py-1 rounded-xl  animate-bounce z-50">
                                 Click me!
                             </div>
-                        )}
+                        )}*/}
                         
                         <button
                             ref={audioButtonRef}
