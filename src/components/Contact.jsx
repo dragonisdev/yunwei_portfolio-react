@@ -35,10 +35,10 @@ const Contact = () => {
         </div>
 
         <div className='flex flex-col items-center text-center'>
-          <p className='font-general text-[12px] uppercase'>Join Zentry</p>
+          <p className='font-general text-[12px] uppercase'>JOIN ME</p>
           <p className='special-font mt-10 w-full font-zentry text-5xl leading-[0.9] md:text-[6rem]'>Let's b<b>u</b>ild the <br/> new era of <br/> g<b>a</b>ming together</p>
 
-          <Button title="contact us" containerClass="mt-10 cursor-pointer"/>
+          <Button title="contact me" containerClass="mt-10 cursor-pointer"/>
         </div>
 
       </div>

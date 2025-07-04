@@ -92,11 +92,9 @@ const Story = () => {
 
               <div className='flex h-full w-fit flex-col items-center md:items-start'>
                 <p className='mt-3 max-w-sm text-center font-circular-web text-violet-50 md:text-start'>
-                  Where realms converge, lies Zentry and the boundless pillar.
-                  Discover its secrets and shape your fate amidst infinite
-                  opportunities.
+                I’m here to help bring your vision to life & ready to turn your concepts into functional, beautiful experiences. Let’s collaborate to make something extraordinary.
                 </p>
-                <Button id="real-button" title="discover prologue" containerClass="!mt-5"/>
+                {/* <Button id="real-button" title="Contact Me" containerClass="!mt-5"/> */}
               </div>
             </div>
 

@@ -133,7 +133,7 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-2.mp4"
               title={<>Web <b> D</b>eveloper</>}
-              description="An anime and gaming-inspired NFT collection - the IP primed for expansion"
+              description="React.js fanboy, TailwindCSS, UI/UX Expert. All My projects are glued together by dreams & hopes."
             />
           </BentoTilt>
           
@@ -142,7 +142,7 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-3.mp4"
               title={<>Music  Pr<b>o</b>ducer</>}
-              description="A gamified social hub, adding a new dimension of play to social interaction for Web3 communities"
+              description="Over 10 years of experience in music production - FL Studio and Ableton expert with 3+ million streams on major platforms."
               isComingSoon
               CTA="Listen"
               URL="https://dragonismusic.com"
@@ -161,20 +161,26 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-4.mp4"
               title={<>C<b>y</b>ber<b>s</b>ecurity</>}
-              description="A cross-world AI agent - elevating your gameplay to be more interactive and productive"
+              description="I'm symbolically an AI"
             />
           </BentoTilt>
 
           <BentoTilt className='bento-tilt_2'>
-            <div className='flex size-full flex-col justify-between bg-violet-300 p-5'>
+            <div className='flex size-full flex-col justify-between bg-violet-200 p-5'>
               <h1 className='bento-title special-font max-w-64 text-black'>More C<b>o</b>ming Soon!</h1>
               <TiLocationArrow className='m-5 scale[5] self-end'/>
             </div>
           </BentoTilt>
 
           <BentoTilt className='bento-tilt_2'>
+          <BentoCard 
+              src="videos/feature-5.mp4"
+              title={<>MEMES</>}
+              description="You've come far, have a drink!"
+            />
             <video
               src="videos/feature-5.mp4"
+              
               loop
               muted
               autoPlay
