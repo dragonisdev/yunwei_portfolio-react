@@ -9,7 +9,6 @@ const About = () => {
     useGSAP(() => {
         const clipAnimation = gsap.timeline({scrollTrigger: {
             trigger: '#clip',
-          
             end: '+800 center',
             scrub: 0.5,
             pin: true,
@@ -17,7 +16,7 @@ const About = () => {
 
         }
     })
-    
+
     clipAnimation.to('.mask-clip-path', {
         width: '100vw',
         height: '100.1vh',
@@ -31,13 +30,12 @@ const About = () => {
         <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
             <TypingText text="I am an..." className='font-general text-sm uppercase md:text-[10px]'></TypingText>
 
-            <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist, <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
-           
+            <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist & <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
 
             <div className='about-subtext'>
-                <p>The game of games begins-your life, now an epic MMORPG</p>
-
-                <p>Zentry unites every player from countless games and platforms</p>
+                <p>Blending code with aesthetics to craft immersive experiences.</p>
+                
+                <p>This a place where I bring ideas into reality.</p>
             </div>
         </div>
 

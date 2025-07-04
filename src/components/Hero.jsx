@@ -14,7 +14,7 @@ const Hero = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [loadedVideos, setLoadedVideos] = useState(0)
 
-  const totalVideos = 4
+  const totalVideos = 5
   const nextVideoRef = useRef(null)
 
 
@@ -87,7 +87,7 @@ const Hero = () => {
 
 
   return (
-    <div className='relative h-dvh w-screen overflow-x-hidden'>
+    <div id="home" className='relative h-dvh w-screen overflow-x-hidden'>
 
         {isLoading && (
           <div className='flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50'>
@@ -95,16 +95,12 @@ const Hero = () => {
               <div className='three-body__dot'></div>
               <div className='three-body__dot'></div>
               <div className='three-body__dot'></div>
-
             </div>
-
-
           </div>
         )}
 
         <div id="video-frame" className='relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75'>
           <div>
-
             <div className='mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg'>
                 <div onClick={handleMiniVdClick} className='origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100'>
                   <video
@@ -147,8 +143,8 @@ const Hero = () => {
               <div className='mt-24 px-5 sm:px-10'>
                 <h1 className='special-font hero-heading text-blue-100'>Y<b>u</b>nwei C<b>u</b>i</h1>
 
-                <p className='md:ml-1 ml-0 mb-5 max-w-128 font-robert-regular text-xl text-blue-100'>My creative portfolio & <br/>  A branding expert to make your products stand out commercially</p>
-                <Button id="watch-trailer" title="Watch Trailer" leftIcon={<TiLocationArrow/>} containerClass="!bg-yellow-300 flex-center gap-1"/>
+                <p className='md:ml-1 ml-0 mb-5 max-w-128 font-robert-regular text-xl text-blue-100'>My creative portfolio of 3D art, electronic music and web development</p>
+                 <Button id="Learn more" title="Learn More" leftIcon={<TiLocationArrow/>} containerClass="!bg-purple-400 flex-center gap-1"/>
               </div>
             </div>
 
