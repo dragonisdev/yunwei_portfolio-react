@@ -88,10 +88,8 @@ const Hero = () => {
           }
         },
         onComplete: () => {
-          // Hide preview after animation completes on mobile
-          if (isMobile && previewVideoRef.current) {
-            gsap.set('#current-video', { opacity: 0 })
-          }
+          // Reset hasClicked to allow clicking again
+          setHasClicked(false)
         }
       })
       gsap.from('#current-video', {
@@ -99,6 +97,16 @@ const Hero = () => {
         scale: 0,
         duration: 1,
         ease: 'power1.inOut',
+        onStart: () => {
+          // Hide the preview immediately when animation starts
+          gsap.set('#current-video', { opacity: 0 })
+        },
+        onComplete: () => {
+          // Show the preview again after animation completes only on desktop
+          if (!isMobile) {
+            gsap.set('#current-video', { opacity: 1 })
+          }
+        }
       })
     }
   }, {
@@ -177,8 +185,8 @@ const Hero = () => {
 
         <div id="video-frame" className='relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75'>
           <div>
-            {/* Only show preview on desktop or hide after click on mobile */}
-            <div className={`mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg ${isMobile && hasClicked ? 'hidden' : ''}`}>
+            {/* Show preview on desktop, or on mobile when not currently animating */}
+            <div className={`mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg ${isMobile && hasClicked ? 'pointer-events-none' : ''}`}>
                 <div onClick={handleMiniVdClick} className='origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100'>
                   <video
                     ref={previewVideoRef}
@@ -274,7 +282,7 @@ const Hero = () => {
 
         {/* Scroll Down Arrow - Mobile */}
         <div 
-          className='arrow absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 cursor-pointer block sm:hidden'
+          className='arrow absolute bottom-12 left-1/2 transform -translate-x-1/2 z-50 cursor-pointer block sm:hidden'
           onClick={handleScrollDown}
         >
           <div className='flex items-center justify-center w-12 h-12 bg-blue-100 bg-opacity-20 backdrop-blur-sm rounded-full border border-blue-100 border-opacity-30 hover:bg-opacity-30 transition-all duration-300'>
