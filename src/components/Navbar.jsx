@@ -6,7 +6,7 @@ import { useWindowScroll } from 'react-use'
 import gsap from 'gsap'
 
 
-const navItems = ['Home', 'About', 'Services', 'Contact']
+const navItems = ['Home', 'About', 'Portfolio', 'Contact']
 
 const Navbar = () => {
 
@@ -163,7 +163,7 @@ const Navbar = () => {
 
                     <Button
                         id="product-button"
-                        title="Alias: DraGonis"
+                        title="PROJECT: DraGonis"
                         rightIcon={<TiLocationArrow />}
                         containerClass="bg-blue-50 md:flex hidden items-center justify-center gap-1"
                         onClick={() => window.open("https://dragonismusic.com", "_blank")}

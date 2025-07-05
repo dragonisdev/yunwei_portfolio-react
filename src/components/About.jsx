@@ -28,14 +28,14 @@ const About = () => {
   return (
     <section id="about" className='min-h-screen w-screen'>
         <div className='relative mb-8 mt-36 flex flex-col items-center gap-5'>
-            <TypingText text="I am an..." className='font-general text-sm uppercase md:text-[10px]'></TypingText>
+            <TypingText text="I am an..." className='font-general text-sm uppercase md:text-[12px]'></TypingText>
 
             <AnimatedTitle title="Experienced <b>p</b>r<b>o</b>ducer, <br/> 3D <b>a</b>rtist & <b>d</b>evel<b>o</b>per" containerClass="mt-5 !text-black text-center"/>
 
             <div className='about-subtext'>
-                <p>Blending code with aesthetics to craft immersive experiences.</p>
+                <p>Blending visual design with code to craft immersive experiences.</p>
                 
-                <p>This a place where I bring ideas into reality.</p>
+                <p>A savant in artistic and emotional expression.</p>
             </div>
         </div>
 

@@ -1,10 +1,10 @@
-import { FaDiscord, FaTwitter, FaYoutube, FaMedium } from "react-icons/fa";
+import { FaDiscord, FaTwitter, FaYoutube, FaMedium, FaGithub, FaLinkedin, FaInstagram } from "react-icons/fa";
 
 const socialLinks = [
+  { href: "https://www.instagram.com/yunwei_c01/", icon: <FaInstagram/>  },
+  { href: "https://github.com/dragonisdev", icon: <FaGithub /> },
   { href: "https://discord.com", icon: <FaDiscord /> },
-  { href: "https://twitter.com", icon: <FaTwitter /> },
-  { href: "https://youtube.com", icon: <FaYoutube /> },
-  { href: "https://medium.com", icon: <FaMedium /> },
+  { href: "https://www.linkedin.com/in/yunwei-cui-86174a188/", icon: <FaLinkedin /> },
 ];
 
 const Footer = () => {

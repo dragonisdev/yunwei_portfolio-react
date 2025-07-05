@@ -55,7 +55,7 @@ const Story = () => {
         <div className='flex size-full flex-col items-center py-10 pb-24'>
             <TypingText
               text="Your one-man army for branding"
-              className="font-general text-sm uppercase md:text-[10px]"
+              className="font-general text-sm uppercase md:text-[12px]"
               speed={60}
             />
 

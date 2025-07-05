@@ -105,7 +105,7 @@ export const BentoCard = ({ src, title, description, isComingSoon, CTA, URL}) =>
 
 const Features = () => {
   return (
-    <section id="services" className='bg-black pb-52'>
+    <section id="portfolio" className='bg-black pb-52'>
       <div className='container mx-auto px-3 md:px-10'>
         <div className='px-5 py-32'>
           <p className='font-circular-web text-lg text-blue-50'>Explore my vision</p>
@@ -121,10 +121,10 @@ const Features = () => {
           <BentoCard 
             src="videos/feature-1.mp4"
             title={<>3D Anim<b>a</b>tor</>}
-            description="Blender 3D, After Effects, Photoshop and a lot of love"
+            description="Blender 3D, After Effects, Photoshop and a lot of love."
             isComingSoon
             CTA="Browse"
-            URL=""
+            URL="https://www.instagram.com/dragonis_art/"
           />
         </BentoTilt>
 
@@ -133,7 +133,7 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-2.mp4"
               title={<>Web <b> D</b>eveloper</>}
-              description="React.js fanboy, TailwindCSS, UI/UX Expert. All My projects are glued together by dreams & hopes."
+              description="React.js fanboy, TailwindCSS, UI/UX connoisseur. My projects are held together by dreams & hopes."
             />
           </BentoTilt>
           
@@ -142,10 +142,10 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-3.mp4"
               title={<>Music  Pr<b>o</b>ducer</>}
-              description="Over 10 years of experience in music production - FL Studio and Ableton expert with 3+ million streams on major platforms."
+              description="Over 10 years of experience in FL Studio and Ableton with over 3+ million streams on major platforms."
               isComingSoon
               CTA="Listen"
-              URL="https://dragonismusic.com"
+              URL="https://open.spotify.com/artist/13z6RhXyaasGa9eeWxduuR?si=9GUY_2aNTqqALLoe4j5b0g"
             />
           </BentoTilt>
 
@@ -161,12 +161,12 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-4.mp4"
               title={<>C<b>y</b>ber<b>s</b>ecurity</>}
-              description="I'm symbolically an AI"
+              description="Check out my write ups regarding security flaws, exploits as well as some fun projects."
             />
           </BentoTilt>
 
           <BentoTilt className='bento-tilt_2'>
-            <div className='flex size-full flex-col justify-between bg-violet-200 p-5'>
+            <div className='flex size-full flex-col justify-between bg-violet-100 p-5'>
               <h1 className='bento-title special-font max-w-64 text-black'>More C<b>o</b>ming Soon!</h1>
               <TiLocationArrow className='m-5 scale[5] self-end'/>
             </div>
