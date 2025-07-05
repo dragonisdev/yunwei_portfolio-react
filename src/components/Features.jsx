@@ -138,7 +138,7 @@ const Features = () => {
           </BentoTilt>
           
 
-          <BentoTilt className='bento-tilt_1 row-span-1 ms-32 md:col-span-1 md:ms-0'>
+          <BentoTilt className='bento-tilt_1 row-span-1 md:col-span-1 '>
             <BentoCard 
               src="videos/feature-3.mp4"
               title={<>Music  Pr<b>o</b>ducer</>}
@@ -157,7 +157,7 @@ const Features = () => {
             />
           </BentoTilt> */}
 
-          <BentoTilt className='bento-tilt_1 me-14 md:col-span-1 md:me-0'>
+          <BentoTilt className='bento-tilt_1  md:col-span-1 md:me-0'>
             <BentoCard 
               src="videos/feature-4.mp4"
               title={<>C<b>y</b>ber<b>s</b>ecurity</>}
