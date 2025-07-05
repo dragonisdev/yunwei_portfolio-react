@@ -40,14 +40,17 @@ const Hero = () => {
     const handleUserInteraction = () => {
       if (!hasUserInteracted) {
         setHasUserInteracted(true)
-        // Try to play the main video after user interaction
+        // Try to play videos after user interaction
         if (mainVideoRef.current) {
           mainVideoRef.current.play().catch(console.error)
+        }
+        if (previewVideoRef.current) {
+          previewVideoRef.current.play().catch(console.error)
         }
       }
     }
 
-    const events = ['touchstart', 'touchend', 'click', 'scroll']
+    const events = ['touchstart', 'touchend', 'click', 'scroll', 'keydown']
     events.forEach(event => {
       document.addEventListener(event, handleUserInteraction, { once: true })
     })
@@ -58,6 +61,32 @@ const Hero = () => {
       })
     }
   }, [hasUserInteracted])
+
+  // Try to play videos once they're loaded
+  useEffect(() => {
+    const tryAutoplay = async () => {
+      if (mainVideoRef.current && !isMobile) {
+        try {
+          await mainVideoRef.current.play()
+        } catch (error) {
+          console.log('Desktop autoplay failed, waiting for user interaction:', error)
+          // Don't set hasUserInteracted to false here, let the interaction handler deal with it
+        }
+      }
+      
+      if (previewVideoRef.current && !isMobile) {
+        try {
+          await previewVideoRef.current.play()
+        } catch (error) {
+          console.log('Preview autoplay failed:', error)
+        }
+      }
+    }
+
+    // Small delay to ensure videos are ready
+    const timer = setTimeout(tryAutoplay, 100)
+    return () => clearTimeout(timer)
+  }, [isMobile, currentIndex])
 
   const handleMiniVdClick = () => {
     setHasClicked(true)
@@ -162,6 +191,16 @@ const Hero = () => {
 
   const getVideoSrc = (index) => `videos/hero-${index}.mp4`
 
+  const handleVideoLoad = () => {
+    setLoadedVideos(prev => {
+      const newCount = prev + 1
+      if (newCount >= 2) { // Main video + preview loaded
+        setIsLoading(false)
+      }
+      return newCount
+    })
+  }
+
   return (
     <div id="home" className='relative h-dvh w-screen overflow-x-hidden'>
 
@@ -187,8 +226,15 @@ const Hero = () => {
                     muted
                     id='current-video'
                     className='size-64 origin-center scale-150 object-cover object-center'
-                    onLoadedData={() => setIsLoading(false)}
+                    onLoadedData={handleVideoLoad}
                     playsInline
+                    preload="metadata"
+                    onCanPlay={() => {
+                      // Try to play preview video when it can play
+                      if (previewVideoRef.current && !isMobile) {
+                        previewVideoRef.current.play().catch(console.error)
+                      }
+                    }}
                     />
                 </div>
             </div>
@@ -197,11 +243,11 @@ const Hero = () => {
               ref={nextVideoRef}
               src={getVideoSrc(currentIndex)}
               loop
-              preload="auto"
+              preload="metadata"
               muted
               id='next-video'
               className='absolute-center invisible absolute z-20 size-64 object-cover object-center'
-              onLoadedData={() => setIsLoading(false)}
+              onLoadedData={handleVideoLoad}
               playsInline
             />
 
@@ -215,11 +261,16 @@ const Hero = () => {
               className='absolute left-0 top-0 size-full object-cover object-center'
               playsInline
               onCanPlay={() => {
-                // Try to play if user has interacted (for mobile)
-                if (isMobile && hasUserInteracted && mainVideoRef.current) {
-                  mainVideoRef.current.play().catch(console.error)
+                // Try to play main video when it can play
+                if (mainVideoRef.current) {
+                  if (isMobile && hasUserInteracted) {
+                    mainVideoRef.current.play().catch(console.error)
+                  } else if (!isMobile) {
+                    mainVideoRef.current.play().catch(console.error)
+                  }
                 }
               }}
+              onLoadedData={handleVideoLoad}
             />
 
             <h1 className='special-font hero-heading absolute z-40 bottom-5 right-5 text-blue-75'>
