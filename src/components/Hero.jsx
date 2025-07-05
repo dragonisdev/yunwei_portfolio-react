@@ -10,20 +10,18 @@ gsap.registerPlugin(ScrollTrigger)
 
 const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [nextIndex, setNextIndex] = useState(2);
   const [hasClicked, setHasClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
   const [loadedVideos, setLoadedVideos] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [hasUserInteracted, setHasUserInteracted] = useState(false)
-  const [isAnimating, setIsAnimating] = useState(false)
 
   const totalVideos = 5
-  const mainVideoRef = useRef(null)
   const nextVideoRef = useRef(null)
+  const mainVideoRef = useRef(null)
   const previewVideoRef = useRef(null)
 
-  const upComingVideoIndex = (nextIndex % totalVideos) + 1
+  const upComingVideoIndex = (currentIndex % totalVideos + 1)
 
   // Detect mobile device
   useEffect(() => {
@@ -62,11 +60,8 @@ const Hero = () => {
   }, [hasUserInteracted])
 
   const handleMiniVdClick = () => {
-    if (isAnimating) return
-    
     setHasClicked(true)
-    setIsAnimating(true)
-    // Don't update currentIndex here - keep the current video playing
+    setCurrentIndex(upComingVideoIndex)
   }
 
   const handleScrollDown = () => {
@@ -78,65 +73,36 @@ const Hero = () => {
 
   useGSAP(() => {
     if(hasClicked) {
-      // Set up the next video with the new source
-      if (nextVideoRef.current) {
-        nextVideoRef.current.src = getVideoSrc(nextIndex)
-        nextVideoRef.current.load()
-      }
+      gsap.set('#next-video', {visibility: 'visible'})
 
-      // Make next video visible and start small
-      gsap.set('#next-video', {
-        visibility: 'visible',
-        scale: 0.25,
-        zIndex: 30
-      })
-
-      // Start playing the next video
-      if (nextVideoRef.current) {
-        nextVideoRef.current.play().catch(console.error)
-      }
-
-      // Animate the next video to full size
       gsap.to('#next-video', {
+        transformOrigin: 'center center',
         scale: 1,
+        width:  '100%',
+        height: '100%',
         duration: 1,
         ease: 'power1.inOut',
         onStart: () => {
-          // Hide the preview immediately when animation starts
-          gsap.set('#current-video', { opacity: 0 })
+          if (nextVideoRef.current) {
+            nextVideoRef.current.play().catch(console.error)
+          }
         },
         onComplete: () => {
-          // Now update the indices - current becomes next, next becomes upcoming
-          setCurrentIndex(nextIndex)
-          setNextIndex(upComingVideoIndex)
-          
-          // Update main video source to match the new current
-          if (mainVideoRef.current) {
-            mainVideoRef.current.src = getVideoSrc(nextIndex)
-            mainVideoRef.current.load()
-            mainVideoRef.current.play().catch(console.error)
-          }
-          
-          // Reset next video
-          gsap.set('#next-video', {
-            visibility: 'hidden',
-            scale: 0.25,
-            zIndex: 20
-          })
-          
-          // Reset states
-          setHasClicked(false)
-          setIsAnimating(false)
-          
-          // Show the preview again after animation completes only on desktop
-          if (!isMobile) {
-            gsap.set('#current-video', { opacity: 1 })
+          // Hide preview after animation completes on mobile
+          if (isMobile && previewVideoRef.current) {
+            gsap.set('#current-video', { opacity: 0 })
           }
         }
       })
+      gsap.from('#current-video', {
+        transformOrigin: 'center center',
+        scale: 0,
+        duration: 1,
+        ease: 'power1.inOut',
+      })
     }
   }, {
-    dependencies: [hasClicked, nextIndex, upComingVideoIndex, isMobile],
+    dependencies: [currentIndex, isMobile],
     revertOnUpdate: true
   });
 
@@ -211,12 +177,12 @@ const Hero = () => {
 
         <div id="video-frame" className='relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75'>
           <div>
-            {/* Show preview on desktop, hide on mobile after first click */}
-            <div className={`mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg ${isAnimating ? 'pointer-events-none' : ''}`}>
+            {/* Only show preview on desktop or hide after click on mobile */}
+            <div className={`mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg ${isMobile && hasClicked ? 'hidden' : ''}`}>
                 <div onClick={handleMiniVdClick} className='origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100'>
                   <video
                     ref={previewVideoRef}
-                    src={getVideoSrc(nextIndex)}
+                    src={getVideoSrc(upComingVideoIndex)}
                     loop
                     muted
                     id='current-video'
@@ -227,7 +193,18 @@ const Hero = () => {
                 </div>
             </div>
 
-            {/* Main background video */}
+            <video
+              ref={nextVideoRef}
+              src={getVideoSrc(currentIndex)}
+              loop
+              preload="auto"
+              muted
+              id='next-video'
+              className='absolute-center invisible absolute z-20 size-64 object-cover object-center'
+              onLoadedData={() => setIsLoading(false)}
+              playsInline
+            />
+
             <video
               ref={mainVideoRef}
               src={getVideoSrc(currentIndex)}
@@ -236,25 +213,13 @@ const Hero = () => {
               loop
               muted
               className='absolute left-0 top-0 size-full object-cover object-center'
-              style={{ zIndex: 10 }}
               playsInline
               onCanPlay={() => {
+                // Try to play if user has interacted (for mobile)
                 if (isMobile && hasUserInteracted && mainVideoRef.current) {
                   mainVideoRef.current.play().catch(console.error)
                 }
               }}
-            />
-
-            {/* Transition video that scales up */}
-            <video
-              ref={nextVideoRef}
-              loop
-              preload="auto"
-              muted
-              id='next-video'
-              className='absolute left-0 top-0 size-full object-cover object-center invisible'
-              style={{ zIndex: 20 }}
-              playsInline
             />
 
             <h1 className='special-font hero-heading absolute z-40 bottom-5 right-5 text-blue-75'>
