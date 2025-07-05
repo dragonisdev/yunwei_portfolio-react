@@ -13,29 +13,56 @@ const Hero = () => {
   const [hasClicked, setHasClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
   const [loadedVideos, setLoadedVideos] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
+  const [hasUserInteracted, setHasUserInteracted] = useState(false)
 
   const totalVideos = 5
   const nextVideoRef = useRef(null)
-
+  const mainVideoRef = useRef(null)
+  const previewVideoRef = useRef(null)
 
   const upComingVideoIndex = (currentIndex % totalVideos + 1)
 
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Handle user interaction for autoplay
+  useEffect(() => {
+    const handleUserInteraction = () => {
+      if (!hasUserInteracted) {
+        setHasUserInteracted(true)
+        // Try to play the main video after user interaction
+        if (mainVideoRef.current) {
+          mainVideoRef.current.play().catch(console.error)
+        }
+      }
+    }
+
+    const events = ['touchstart', 'touchend', 'click', 'scroll']
+    events.forEach(event => {
+      document.addEventListener(event, handleUserInteraction, { once: true })
+    })
+
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, handleUserInteraction)
+      })
+    }
+  }, [hasUserInteracted])
+
   const handleMiniVdClick = () => {
-
     setHasClicked(true)
-
     setCurrentIndex(upComingVideoIndex)
   }
-
-{/*}
-  const handleVideoLoad = () => {
-    setLoadedVideos((prev) => prev + 1)
-  }
-  useEffect(() => {
-    if (loadedVideos === totalVideos -1) {
-      setIsLoading(false)
-    }
-  }, [loadedVideos]) */}
 
   useGSAP(() => {
     if(hasClicked) {
@@ -48,18 +75,27 @@ const Hero = () => {
         height: '100%',
         duration: 1,
         ease: 'power1.inOut',
-        onStart: () => nextVideoRef.current.play(),
+        onStart: () => {
+          if (nextVideoRef.current) {
+            nextVideoRef.current.play().catch(console.error)
+          }
+        },
+        onComplete: () => {
+          // Hide preview after animation completes on mobile
+          if (isMobile && previewVideoRef.current) {
+            gsap.set('#current-video', { opacity: 0 })
+          }
+        }
       })
       gsap.from('#current-video', {
         transformOrigin: 'center center',
         scale: 0,
         duration: 1,
         ease: 'power1.inOut',
-
       })
     }
   }, {
-    dependencies: [currentIndex],
+    dependencies: [currentIndex, isMobile],
     revertOnUpdate: true
   });
 
@@ -84,8 +120,6 @@ const Hero = () => {
 
   const getVideoSrc = (index) => `videos/hero-${index}.mp4`
 
-
-
   return (
     <div id="home" className='relative h-dvh w-screen overflow-x-hidden'>
 
@@ -101,16 +135,18 @@ const Hero = () => {
 
         <div id="video-frame" className='relative z-10 h-dvh w-screen overflow-hidden rounded-lg bg-blue-75'>
           <div>
-            <div className='mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg'>
+            {/* Only show preview on desktop or hide after click on mobile */}
+            <div className={`mask-clip-path absolute-center absolute z-50 size-64 cursor-pointer overflow-hidden rounded-lg ${isMobile && hasClicked ? 'hidden' : ''}`}>
                 <div onClick={handleMiniVdClick} className='origin-center scale-50 opacity-0 transition-all duration-500 ease-in hover:scale-100 hover:opacity-100'>
                   <video
-                    ref={nextVideoRef}
+                    ref={previewVideoRef}
                     src={getVideoSrc(upComingVideoIndex)}
                     loop
                     muted
                     id='current-video'
                     className='size-64 origin-center scale-150 object-cover object-center'
                     onLoadedData={() => setIsLoading(false)}
+                    playsInline
                     />
                 </div>
             </div>
@@ -124,15 +160,24 @@ const Hero = () => {
               id='next-video'
               className='absolute-center invisible absolute z-20 size-64 object-cover object-center'
               onLoadedData={() => setIsLoading(false)}
+              playsInline
             />
 
             <video
+              ref={mainVideoRef}
               src={getVideoSrc(currentIndex)}
-              autoPlay
+              autoPlay={!isMobile}
               preload="auto"
               loop
               muted
               className='absolute left-0 top-0 size-full object-cover object-center'
+              playsInline
+              onCanPlay={() => {
+                // Try to play if user has interacted (for mobile)
+                if (isMobile && hasUserInteracted && mainVideoRef.current) {
+                  mainVideoRef.current.play().catch(console.error)
+                }
+              }}
             />
 
             <h1 className='special-font hero-heading absolute z-40 bottom-5 right-5 text-blue-75'>
