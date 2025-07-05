@@ -64,6 +64,13 @@ const Hero = () => {
     setCurrentIndex(upComingVideoIndex)
   }
 
+  const handleScrollDown = () => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth'
+    })
+  }
+
   useGSAP(() => {
     if(hasClicked) {
       gsap.set('#next-video', {visibility: 'visible'})
@@ -117,6 +124,41 @@ const Hero = () => {
       }
     })
   })
+
+  // Separate useGSAP for arrow animations
+  useGSAP(() => {
+    // Animate the scroll arrow bounce
+    gsap.to('.scroll-arrow', {
+      y: 8,
+      duration: 1.2,
+      ease: 'power2.inOut',
+      yoyo: true,
+      repeat: -1,
+    })
+
+    // Animate the mouse wheel dot
+    gsap.to('.mouse-dot', {
+      y: 12,
+      duration: 1.5,
+      ease: 'power2.inOut',
+      yoyo: true,
+      repeat: -1,
+    })
+
+    // Fade out arrow on scroll
+    gsap.to('.arrow', {
+      opacity: 0,
+      y: 20,
+      duration: 0.5,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: document.body,
+        start: 'top top',
+        end: '150px top',
+        scrub: true,
+      }
+    })
+  }, [])
 
   const getVideoSrc = (index) => `videos/hero-${index}.mp4`
 
@@ -195,9 +237,62 @@ const Hero = () => {
 
           </div>
         </div>
+
         <h1 className='special-font hero-heading absolute  bottom-5 right-5 text-black'>
-              P<b>o</b>rtfolio
-          </h1>
+            P<b>o</b>rtfolio
+        </h1>
+
+        {/* Scroll Down Arrow - Desktop */}
+        <div 
+          className='arrow absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 cursor-pointer hidden sm:block group'
+          onClick={handleScrollDown}
+        >
+          <div className='flex flex-col items-center'>
+            <span className='text-blue-100 font-robert-regular text-sm mb-3 opacity-80 group-hover:opacity-100 transition-opacity duration-300'>
+              Scroll Down
+            </span>
+            <div className='scroll-arrow flex flex-col items-center group-hover:scale-110 transition-transform duration-300'>
+              <div className='w-6 h-10 border-2 border-blue-100 rounded-full flex justify-center relative mb-2 group-hover:border-white transition-colors duration-300'>
+                <div className='mouse-dot w-1 h-3 bg-blue-100 rounded-full mt-2 group-hover:bg-white transition-colors duration-300'></div>
+              </div>
+              <svg 
+                className='w-6 h-6 text-blue-100 group-hover:text-white transition-colors duration-300' 
+                fill='none' 
+                stroke='currentColor' 
+                viewBox='0 0 24 24'
+              >
+                <path 
+                  strokeLinecap='round' 
+                  strokeLinejoin='round' 
+                  strokeWidth={2} 
+                  d='M19 14l-7 7m0 0l-7-7m7 7V3' 
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Down Arrow - Mobile */}
+        <div 
+          className='arrow absolute bottom-4 left-1/2 transform -translate-x-1/2 z-50 cursor-pointer block sm:hidden'
+          onClick={handleScrollDown}
+        >
+          <div className='flex items-center justify-center w-12 h-12 bg-blue-100 bg-opacity-20 backdrop-blur-sm rounded-full border border-blue-100 border-opacity-30 hover:bg-opacity-30 transition-all duration-300'>
+            <svg 
+              className='w-5 h-5 text-blue-100 scroll-arrow' 
+              fill='none' 
+              stroke='currentColor' 
+              viewBox='0 0 24 24'
+            >
+              <path 
+                strokeLinecap='round' 
+                strokeLinejoin='round' 
+                strokeWidth={2.5} 
+                d='M19 14l-7 7m0 0l-7-7m7 7V3' 
+              />
+            </svg>
+          </div>
+        </div>
     </div>
   )
 }
