@@ -161,7 +161,10 @@ const Features = () => {
             <BentoCard 
               src="videos/feature-4.mp4"
               title={<>C<b>y</b>ber<b>s</b>ecurity</>}
-              description="Check out my write ups regarding security flaws, exploits as well as some fun projects."
+              description="Check out my write ups regarding security flaws, exploits as well as some fun side projects."
+              isComingSoon
+              CTA="Read"
+              URL="https://github.com/dragonisdev/vulnwriteups"
             />
           </BentoTilt>
 
@@ -176,7 +179,11 @@ const Features = () => {
           <BentoCard 
               src="videos/feature-5.mp4"
               title={<>MEMES</>}
-              description="You've come far, have a drink!"
+              description="You've come far, have a drink! 
+              (not my memes)"
+              isComingSoon
+              CTA="Enjoy"
+              URL="https://www.instagram.com/nesquik.v2?igsh=bnFnaGZqeTR1ZGF2"
             />
             <video
               src="videos/feature-5.mp4"
