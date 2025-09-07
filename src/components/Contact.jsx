@@ -43,7 +43,11 @@ const Contact = () => {
             />
           <p className='special-font mt-10 w-full font-zentry text-5xl leading-[0.9] md:text-[6rem] z-10'>Let's b<b>u</b>ild the <br/> perfect story <br/> together</p>
 
-          <Button title="contact me" containerClass="mt-10 cursor-pointer"/>
+          <Button 
+            title="contact me" 
+            containerClass="mt-10 cursor-pointer"
+            onClick={() => window.open('mailto:dragonisbasslord@gmail.com', '_self')}
+          />
         </div>
 
       </div>
