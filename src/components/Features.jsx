@@ -112,8 +112,8 @@ const Features = () => {
         
         
           <p className='max-w-md font-circular-web text-lg text-blue-50 opacity-50'>
-          I believe in design that tells a story — interfaces that feel alive, brands that resonate, and experiences that connect.  
-          Every project I create pushes past boundaries.
+          I believe in design that tells a story and experiences that connect.  
+          Every project I create pushes past my previous boundaries.
           </p>
         </div>
         
