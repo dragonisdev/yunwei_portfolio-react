@@ -195,7 +195,8 @@ const Navbar = () => {
                     <div className='relative'>
                         {showAudioHint && (
                             <div className="absolute top-10 left-5 bg-pink-400 text-white text-sm px-3 py-1 rounded-xl  animate-bounce z-50">
-                                Click me!
+                                Click!
+                                <div className="absolute left-5 -top-2 w-0 h-0 border-l-8 border-l-transparent border-r-8 border-r-transparent border-b-8 border-b-pink-400" />
                             </div>
                         )}
                         

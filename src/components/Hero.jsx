@@ -12,7 +12,7 @@ const Hero = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
   const [hasClicked, setHasClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(true)
-  const [loadedVideos, setLoadedVideos] = useState(0)
+  const loadedVideosRef = useRef(0)
   const [isMobile, setIsMobile] = useState(false)
   const [hasUserInteracted, setHasUserInteracted] = useState(false)
 
@@ -192,24 +192,27 @@ const Hero = () => {
   const getVideoSrc = (index) => `videos/hero-${index}.mp4`
 
   const handleVideoLoad = () => {
-    setLoadedVideos(prev => {
-      const newCount = prev + 1
-      if (newCount >= 2) { // Main video + preview loaded
-        setIsLoading(false)
-      }
-      return newCount
-    })
+    loadedVideosRef.current += 1
+    if (loadedVideosRef.current >= 2) {
+      setIsLoading(false)
+    }
   }
 
   return (
     <div id="home" className='relative h-dvh w-screen overflow-x-hidden'>
 
         {isLoading && (
-          <div className='flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-violet-50'>
-            <div className='three-body'>
-              <div className='three-body__dot'></div>
-              <div className='three-body__dot'></div>
-              <div className='three-body__dot'></div>
+          <div className='flex-center absolute z-[100] h-dvh w-screen overflow-hidden bg-black'>
+            <div className='loader-orbit'>
+              <div className='orbit'>
+                <div className='orbit__ring ring-1'></div>
+                <div className='orbit__ring ring-2'></div>
+                <div className='orbit__ring ring-3'></div>
+                <div className='orbit__center'>
+                  <img src='/img/logo.png' alt='logo' />
+                </div>
+              </div>
+              <span className='font-robert-regular text-xl text-blue-100'>Loading portfolio…</span>
             </div>
           </div>
         )}
